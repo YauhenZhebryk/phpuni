@@ -16,8 +16,10 @@
         </div>
 
     {% for page in pages %}
+        {% if '/admin' not in page or is_granted('ROLE_ADMIN') %}
         <hr>
-        <a href={{ page }}>{{ page }}</a>
+        <a href={{ page }}>{{ page|replace({'/': '', '\\': ''})|upper }}</a>
+        {% endif %}
     {% endfor %}
         <hr>
     </div>

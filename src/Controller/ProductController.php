@@ -12,7 +12,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 class ProductController extends AbstractController
 {
-    #[\Symfony\Component\Routing\Annotation\Route('/product', name: 'product')]
+    #[\Symfony\Component\Routing\Annotation\Route('/admin/product', name: 'product')]
 public function new(Request $request, EntityManagerInterface $em): Response
 {
     $product = new Product();
