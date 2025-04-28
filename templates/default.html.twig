@@ -1,0 +1,27 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Main Page{% endblock %}
+
+{% block body %}
+
+
+
+    <div class="container" style="text-align: center">
+        <div style="padding: 20px;">
+            {% if user is defined and user is not null %}
+                <h2>Welcome dear {{ user.username }}</h2>
+            {% else %}
+                <h2>It's our homepage</h2>
+            {% endif %}
+        </div>
+
+    {% for page in pages %}
+        <hr>
+        <a href={{ page }}>{{ page }}</a>
+    {% endfor %}
+        <hr>
+    </div>
+
+{% endblock %}
+
+{% block Homepage %}{% endblock %}
