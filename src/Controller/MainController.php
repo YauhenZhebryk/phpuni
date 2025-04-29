@@ -20,6 +20,7 @@ class MainController extends AbstractController
             'register' => $this->generateUrl('app_register'),
             'login' => $this->generateUrl('app_login'),
             'logout' => $this->generateUrl('app_logout'),
+            'password_change' => $this->generateUrl('app_password_change'),
         ];
 
         return $this->render('default.html.twig', [
