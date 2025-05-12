@@ -16,7 +16,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 class CategoryController extends AbstractController
 {
-    #[\Symfony\Component\Routing\Annotation\Route('/category', name: 'category')]
+    #[\Symfony\Component\Routing\Annotation\Route('/admin/category', name: 'category')]
 public function new(Request $request, EntityManagerInterface $em): Response
 {
     $category = new Category();

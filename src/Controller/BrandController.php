@@ -14,7 +14,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 class BrandController extends AbstractController
 {
-    #[\Symfony\Component\Routing\Annotation\Route('/brand', name: 'brand')]
+    #[\Symfony\Component\Routing\Annotation\Route('/admin/brand', name: 'brand')]
 public function new(Request $request, EntityManagerInterface $em): Response
 {
     $brand = new Brand();
