@@ -1,0 +1,70 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <header class="header">
+        <main>
+            <div></div>
+            <div class="header_logo-wrapper"><a href="{{ mainPage }}" class="header_logo">MUSEBOX</a></div>
+            <div>
+                <a href=""><img src="{{ asset('images/account.svg') }}" alt="account logo" class="header_account"></a>
+                <a href=""></a>
+            </div>
+        </main>
+
+        <nav class="header_nav">
+            <a href="">Categories</a>
+            <a href="">Brands</a>
+            <a href="{{ path('product_show') }}">All products</a>
+        </nav>
+    </header>
+    <main>
+        <h1 class="main_header-text">Welcome to MUSEBOX</h1>
+        <section class="categories_section section">
+            <h2 class="categories_section-text section-text">Categories</h2>
+            <div class="categories_section-container section-container">
+                {% for category in categories %}
+                    <a class="category-item card-body" href="{{ path('category_show', {'id': category.id}) }}">
+                            <div class="category-item-image-wrapper card-img-wrapper">
+                                <img src="{{ asset('uploads/images/' ~ category.image) }}" class="category-item-image card-image" alt="{{ category.name }}">
+                            </div>
+                                <div class="category-item-body">
+                                    <h3 class="category-item-title">{{ category.name }}</h3>
+                                    <p class="category-item-desc card-desc">{{ category.description }}</p>
+                                </div>
+                    </a>
+                {% endfor %}
+            </div>
+        </section>
+        <section class="brand_section section">
+            <h2 class="brands_section-text section-text">Brands</h2>
+            <div class="categories_section-container section-container">
+                {% for brand in brands %}
+                    <a class="category-item card-body" href="{{ path('brand_show', {'id': brand.id}) }}">
+                        <div class="category-item-image-wrapper card-img-wrapper">
+                            <img src="{{ asset('uploads/images/' ~ brand.image) }}" class="category-item-image card-image" alt="{{ brand.name }}">
+                        </div>
+                        <div class="category-item-body">
+                            <h3 class="category-item-title">{{ brand.name }}</h3>
+                            <p class="category-item-desc card-desc">{{ brand.rating }}&#11088;</p>
+                        </div>
+                    </a>
+                {% endfor %}
+            </div>
+        </section>
+        <section class="interest_section section">
+            <h2 class="interest-text section-text">You may be interested:</h2>
+            <div class="interest_section-container section-container">
+                {% for product in randomProducts %}
+                    <a class="interest-item">
+                        <div class="interest-item-image-wrapper card-img-wrapper">
+                            <img src="{{ asset('uploads/images/' ~ product.image) }}" class="interest-item-image card-image" alt="{{ product.name }}">
+                        </div>
+                        <div class="interest-item-body">
+                            <h3 class="interest-item-title">{{ product.name }}</h3>
+                        </div>
+                    </a>
+                {% endfor %}
+            </div>
+        </section>
+    </main>
+{% endblock %}
