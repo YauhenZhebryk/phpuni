@@ -1,11 +1,9 @@
-{% extends 'base.html.twig' %}
-
+{% extends 'secondpage.html.twig' %}
+{%  block headertitle %} {{ brand.name }} {{ brand.rating }}&#11088;{% endblock %}
 {% block title %}Category {{ brand.name }}{% endblock %}
 
 {% block body %}
-    <div class="container">
-        <h1>{{ brand.name }}</h1>
-
+    <div class="container mt-4">
         <div class="row">
             {% for product in products %}
                 <div class="col-md-4 mb-3">

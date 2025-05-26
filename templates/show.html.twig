@@ -1,6 +1,6 @@
-{% extends 'base.html.twig' %}
-
-{% block title %}Show Page{% endblock %}
+{% extends 'secondpage.html.twig' %}
+{%  block headertitle %}List{% endblock %}
+{% block title %}Product List{% endblock %}
 
 {% block body %}
     <div class="container" style="text-align: center">
@@ -24,6 +24,10 @@
                                         {{ category.name }}{% if not loop.last %}, {% endif %}
                                     {% endfor %}
                                 </p>
+
+                                {% if is_granted('ROLE_ADMIN') %}
+                                    <a href="{{ path('product_delete', {'id': product.id}) }}" class="delete_button">Delete</a>
+                                {% endif %}
                             </div>
                         </div>
 

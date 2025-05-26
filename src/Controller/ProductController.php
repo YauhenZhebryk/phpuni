@@ -3,12 +3,15 @@ namespace App\Controller;
 
 use App\Entity\Product;
 use App\Form\Type\ProductType;
+use App\Repository\ProductRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use JetBrains\PhpStorm\NoReturn;
 use Symfony\Component\HttpFoundation\File\Exception\FileException;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Symfony\Component\String\Slugger\SluggerInterface;
 
 
@@ -39,9 +42,39 @@ public function new(Request $request, EntityManagerInterface $em, SluggerInterfa
         $product->setImage($newFilename);
         $em->persist($product);
         $em->flush();
+
+        return $this->redirectToRoute('product');
     }
     return $this->render('product.html.twig', [
         'form' => $form,
     ]);
 }
+
+    #[Route('/admin/product/{id}/delete', name: 'product_delete', methods: ['GET'])]
+    #[IsGranted('ROLE_ADMIN')]
+    public function delete(Product $product, EntityManagerInterface $entityManager): Response
+    {
+        if ($product->getImage()) {
+            $imagePath = $this->getParameter('kernel.project_dir') . '/public/uploads/images/' . $product->getImage();
+            if (file_exists($imagePath)) {
+                unlink($imagePath);
+            }
+        }
+        $entityManager->remove($product);
+        $entityManager->flush();
+
+        return $this->redirectToRoute('main');
+    }
+
+    #[NoReturn] #[Route('/product/show', name: 'product_show')]
+    public function show(ProductRepository $productRepository): Response
+    {
+        $allProducts = $productRepository->findAll();
+        $mainPage = $this->generateUrl('main');
+
+        return $this->render('show.html.twig', [
+            'products' => $allProducts,
+            'mainPage' => $mainPage,
+        ]);
+    }
 }

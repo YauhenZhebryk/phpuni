@@ -1,0 +1,35 @@
+{% extends 'secondpage.html.twig' %}
+{%  block headertitle %}Your account{% endblock %}
+{% block title %}Account{% endblock %}
+
+{% block body %}
+    <main class="container mt-4 mb-4 account-page_main">
+        {% if user %}
+            <div class="account-page_text">
+                <p class="account-page_welcome-text">Welcome, <strong>{{ user.username }}</strong></p>
+                <a href="{{ path('app_password_change') }}" class="account-page_button">Password Change</a>
+            </div>
+            <div class="review">
+                <h4>Create your review and rate us :)</h4>
+                {{ form(form) }}
+            </div>
+            {% if is_granted('ROLE_ADMIN') %}
+                <div class="account-page-admin">
+                    <h3>Admin Functions</h3>
+                    <a href="{{ path('category') }}" class="account-page_button admin-button">Category Create</a>
+                    <a href="{{ path('brand') }}" class="account-page_button admin-button">Brand Create</a>
+                    <a href="{{ path('product') }}" class="account-page_button admin-button">Product Create</a>
+                </div>
+
+            {% endif %}
+            <a href="{{ path('app_logout') }}" class="account-page_button">Logout</a>
+
+
+        {% else %}
+            <div class="account-page_login">
+            <a href="{{ path('app_login') }}" class="account-page_button">Log In</a>
+            <a href="{{ path('app_register') }}" class="account-page_button">Register</a>
+            </div>
+        {% endif %}
+    </main>
+{% endblock %}

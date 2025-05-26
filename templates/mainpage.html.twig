@@ -6,7 +6,11 @@
             <div></div>
             <div class="header_logo-wrapper"><a href="{{ mainPage }}" class="header_logo">MUSEBOX</a></div>
             <div>
-                <a href=""><img src="{{ asset('images/account.svg') }}" alt="account logo" class="header_account"></a>
+                <a href="{{ accountPage }}"  class="header_account">
+                    {% if user %}
+                        <span class="header_account-name">{{ user.username }}</span>
+                    {% endif %}
+                    <img src="{{ asset('images/account.svg') }}" alt="account logo" class="header_account-img"></a>
                 <a href=""></a>
             </div>
         </main>
@@ -23,31 +27,44 @@
             <h2 class="categories_section-text section-text">Categories</h2>
             <div class="categories_section-container section-container">
                 {% for category in categories %}
-                    <a class="category-item card-body" href="{{ path('category_show', {'id': category.id}) }}">
+                    <div class="item-wrapper">
+                        <a class="category-item card-body" href="{{ path('category_show', {'id': category.id}) }}">
                             <div class="category-item-image-wrapper card-img-wrapper">
                                 <img src="{{ asset('uploads/images/' ~ category.image) }}" class="category-item-image card-image" alt="{{ category.name }}">
                             </div>
-                                <div class="category-item-body">
-                                    <h3 class="category-item-title">{{ category.name }}</h3>
-                                    <p class="category-item-desc card-desc">{{ category.description }}</p>
-                                </div>
-                    </a>
+                            <div class="category-item-body">
+                                <h3 class="category-item-title">{{ category.name }}</h3>
+                                <p class="category-item-desc card-desc">{{ category.description }}</p>
+                            </div>
+                        </a>
+
+                        {% if is_granted('ROLE_ADMIN') %}
+                            <a href="{{ path('category_delete', {'id': category.id}) }}" class="delete_button">Delete</a>
+                        {% endif %}
+                    </div>
                 {% endfor %}
             </div>
         </section>
+
         <section class="brand_section section">
             <h2 class="brands_section-text section-text">Brands</h2>
             <div class="categories_section-container section-container">
                 {% for brand in brands %}
-                    <a class="category-item card-body" href="{{ path('brand_show', {'id': brand.id}) }}">
-                        <div class="category-item-image-wrapper card-img-wrapper">
-                            <img src="{{ asset('uploads/images/' ~ brand.image) }}" class="category-item-image card-image" alt="{{ brand.name }}">
-                        </div>
-                        <div class="category-item-body">
-                            <h3 class="category-item-title">{{ brand.name }}</h3>
-                            <p class="category-item-desc card-desc">{{ brand.rating }}&#11088;</p>
-                        </div>
-                    </a>
+                    <div class="item-wrapper">
+                        <a class="category-item card-body"  href="{{ path('brand_show', {'id': brand.id}) }}">
+                            <div class="category-item-image-wrapper card-img-wrapper">
+                                <img src="{{ asset('uploads/images/' ~ brand.image) }}" class="category-item-image card-image" alt="{{ brand.name }}">
+                            </div>
+                            <div class="category-item-body">
+                                <h3 class="category-item-title">{{ brand.name }}</h3>
+                                <p class="category-item-desc card-desc">{{ brand.rating }}&#11088;</p>
+                            </div>
+                        </a>
+
+                        {% if is_granted('ROLE_ADMIN') %}
+                            <a href="{{ path('brand_delete', {'id': brand.id}) }}" class="delete_button">Delete</a>
+                        {% endif %}
+                    </div>
                 {% endfor %}
             </div>
         </section>
@@ -55,14 +72,20 @@
             <h2 class="interest-text section-text">You may be interested:</h2>
             <div class="interest_section-container section-container">
                 {% for product in randomProducts %}
+                    <div class="item-wrapper">
                     <a class="interest-item">
                         <div class="interest-item-image-wrapper card-img-wrapper">
-                            <img src="{{ asset('uploads/images/' ~ product.image) }}" class="interest-item-image card-image" alt="{{ product.name }}">
+                            <img src="{{ asset('uploads/images/' ~ product.image) }}" class="interest-item-image" alt="{{ product.name }}">
                         </div>
                         <div class="interest-item-body">
                             <h3 class="interest-item-title">{{ product.name }}</h3>
                         </div>
                     </a>
+
+                        {% if is_granted('ROLE_ADMIN') %}
+                            <a href="{{ path('product_delete', {'id': product.id}) }}" class="delete_button">Delete</a>
+                        {% endif %}
+                    </div>
                 {% endfor %}
             </div>
         </section>

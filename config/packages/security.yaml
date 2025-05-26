@@ -19,11 +19,11 @@ security:
             form_login:
                 login_path: app_login
                 check_path: app_login
-                default_target_path: message
+                default_target_path: main
                 enable_csrf: true
             logout:
                 path: app_logout
-                target: message
+                target: main
                 # where to redirect after logout
                 # target: app_any_route
 

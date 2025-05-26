@@ -15,10 +15,12 @@ class MainController extends AbstractController
     #[Route('/', name: 'main')]
     public function number(CategoryRepository $categoryRepository, BrandRepository $brandRepository, ProductRepository $productRepository): Response
     {
+        $user = $this->getUser();
         $categories = $categoryRepository->findAll();
         $brands = $brandRepository->findAll();
         $mainPage = $this->generateUrl('main');
         $randomProducts = $productRepository->findRandomProducts(4);
+        $accountPage = $this->generateUrl('account_page');
         $pages = [
             'category' => $this->generateUrl('category'),
             'product' => $this->generateUrl('product'),
@@ -35,8 +37,9 @@ class MainController extends AbstractController
             'randomProducts' => $randomProducts,
             'brands' => $brands,
             'mainPage' => $mainPage,
+            'accountPage' => $accountPage,
             'pages' => $pages,
-            'user' => $this->getUser(),
+            'user' => $user,
             'categories' => $categories,
         ]);
     }

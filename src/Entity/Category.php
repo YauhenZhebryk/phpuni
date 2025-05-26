@@ -25,7 +25,7 @@ class Category
     /**
      * @var Collection<int, Product>
      */
-    #[ORM\ManyToMany(targetEntity: Product::class, mappedBy: 'category')]
+    #[ORM\ManyToMany(targetEntity: Product::class, mappedBy: 'category', cascade: ['remove'], orphanRemoval: true)]
     private Collection $products;
 
     #[ORM\Column(length: 255)]

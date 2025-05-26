@@ -5,12 +5,14 @@ use App\Entity\Brand;
 use App\Entity\Product;
 use App\Form\Type\BrandType;
 use App\Form\Type\ProductType;
+use App\Repository\BrandRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\File\Exception\FileException;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Symfony\Component\String\Slugger\SluggerInterface;
 
 
@@ -41,9 +43,45 @@ public function new(Request $request, EntityManagerInterface $em, SluggerInterfa
         $brand->setImage($newFilename);
         $em->persist($brand);
         $em->flush();
+
+
+        return $this->redirectToRoute('brand');
     }
     return $this->render('product.html.twig', [
         'form' => $form,
     ]);
 }
+    #[Route('/admin/brand/{id}/delete', name: 'brand_delete', methods: ['GET'])]
+    #[IsGranted('ROLE_ADMIN')]
+    public function delete(Brand $brand, EntityManagerInterface $entityManager): Response
+    {
+        if ($brand->getImage()) {
+            $imagePath = $this->getParameter('kernel.project_dir') . '/public/uploads/images/' . $brand->getImage();
+            if (file_exists($imagePath)) {
+                unlink($imagePath);
+            }
+        }
+
+        $entityManager->remove($brand);
+        $entityManager->flush();
+
+        return $this->redirectToRoute('main');
+    }
+
+    #[\Symfony\Component\Routing\Annotation\Route('/brand/{id}', name: 'brand_show')]
+    public function show(int $id, BrandRepository $brandRepository): Response
+    {
+        $brand = $brandRepository->find($id);
+
+        if (!$brand) {
+            throw $this->createNotFoundException('Brand not found');
+        }
+
+        $products = $brand->getProducts();
+
+        return $this->render('brand/show.html.twig', [
+            'brand' => $brand,
+            'products' => $products,
+        ]);
+    }
 }
