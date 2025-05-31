@@ -1,0 +1,35 @@
+{% extends 'secondpage.html.twig' %}
+{%  block headertitle %}Categories List{% endblock %}
+{% block title %}Categories List{% endblock %}
+
+{% block body %}
+    <div class="container" style="text-align: center">
+    <h1>Categories List</h1>
+
+    {% if categories is not empty %}
+    <div class="row">
+        {% for category in categories %}
+            <div class="card" style="margin: 5px 0">
+                <a href="{{ path('category_show', {'id': category.id}) }}">
+                    <div class="card-body">
+                        <h5 class="card-title">{{ category.name }}</h5>
+                        {% if category.image %}
+                            <img src="{{ asset('uploads/images/' ~ category.image) }}" alt="{{ category.name }}" style="max-width: 200px; border-radius: 20px">
+                        {% endif %}
+                        <p class="card-text" style="margin-bottom: 5px;">{{ category.description }}</p>
+
+
+                        {% if is_granted('ROLE_ADMIN') %}
+                            <a href="{{ path('category_delete', {'id': category.id}) }}" class="delete_button" >Delete</a>
+                        {% endif %}
+                    </div>
+                </a>
+            </div>
+
+        {% endfor %}
+        {% else %}
+            <p>No categories found.</p>
+        {% endif %}
+
+    </div>
+{% endblock %}

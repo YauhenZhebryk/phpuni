@@ -7,8 +7,10 @@ use App\Entity\Product;
 use App\Form\Type\BrandType;
 use App\Form\Type\CategoryType;
 use App\Form\Type\ProductType;
+use App\Repository\BrandRepository;
 use App\Repository\CategoryRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use JetBrains\PhpStorm\NoReturn;
 use Symfony\Component\HttpFoundation\File\Exception\FileException;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Attribute\Route;
@@ -70,6 +72,18 @@ public function new(Request $request, EntityManagerInterface $em, SluggerInterfa
 
 
         return $this->redirectToRoute('main');
+    }
+
+    #[NoReturn] #[Route('/category/all', name: 'category_show_all')]
+    public function showAll(CategoryRepository $categoryRepository): Response
+    {
+        $allCategories = $categoryRepository->findAll();
+        $mainPage = $this->generateUrl('main');
+
+        return $this->render('category/showAll.html.twig', [
+            'categories' => $allCategories,
+            'mainPage' => $mainPage,
+        ]);
     }
 
     #[\Symfony\Component\Routing\Annotation\Route('/category/{id}', name: 'category_show')]

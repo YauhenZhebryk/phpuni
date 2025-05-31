@@ -36,6 +36,7 @@ class AccountPageController extends AbstractController
             $em->flush();
 
             $this->addFlash('success', 'Success');
+            return $this->redirectToRoute('account_page');
         }
 
         return $this->render('account/index.html.twig', [

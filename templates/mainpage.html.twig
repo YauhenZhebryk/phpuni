@@ -16,8 +16,8 @@
         </main>
 
         <nav class="header_nav">
-            <a href="">Categories</a>
-            <a href="">Brands</a>
+            <a href="{{ path('category_show_all') }}">Categories</a>
+            <a href="{{ path('brand_show_all') }}">Brands</a>
             <a href="{{ path('product_show') }}">All products</a>
         </nav>
     </header>
@@ -28,7 +28,7 @@
             <div class="categories_section-container section-container">
                 {% for category in categories %}
                     <div class="item-wrapper">
-                        <a class="category-item card-body" href="{{ path('category_show', {'id': category.id}) }}">
+                        <a class="category-item card_body" href="{{ path('category_show', {'id': category.id}) }}">
                             <div class="category-item-image-wrapper card-img-wrapper">
                                 <img src="{{ asset('uploads/images/' ~ category.image) }}" class="category-item-image card-image" alt="{{ category.name }}">
                             </div>
@@ -51,7 +51,7 @@
             <div class="categories_section-container section-container">
                 {% for brand in brands %}
                     <div class="item-wrapper">
-                        <a class="category-item card-body"  href="{{ path('brand_show', {'id': brand.id}) }}">
+                        <a class="category-item card_body"  href="{{ path('brand_show', {'id': brand.id}) }}">
                             <div class="category-item-image-wrapper card-img-wrapper">
                                 <img src="{{ asset('uploads/images/' ~ brand.image) }}" class="category-item-image card-image" alt="{{ brand.name }}">
                             </div>
@@ -73,7 +73,7 @@
             <div class="interest_section-container section-container">
                 {% for product in randomProducts %}
                     <div class="item-wrapper">
-                    <a class="interest-item">
+                    <a class="interest-item" href="{{ path('product_show_one', {'id': product.id}) }}">
                         <div class="interest-item-image-wrapper card-img-wrapper">
                             <img src="{{ asset('uploads/images/' ~ product.image) }}" class="interest-item-image" alt="{{ product.name }}">
                         </div>
@@ -84,6 +84,26 @@
 
                         {% if is_granted('ROLE_ADMIN') %}
                             <a href="{{ path('product_delete', {'id': product.id}) }}" class="delete_button">Delete</a>
+                        {% endif %}
+                    </div>
+                {% endfor %}
+            </div>
+        </section>
+        <section class="reviews_section">
+            <h2 class="review_text section-text">Check our reviews</h2>
+            <div class="review_section_container section-container">
+                {% for review in reviews %}
+                    <div class="item-wrapper">
+                            <div class="review_item-body">
+                                <div class="review_user-wrapper">
+                                    <h3 class="review_user">{{ review.user.username}}</h3>
+                                    <p class="review_rating">{{ review.rating}}&#11088;</p>
+                                </div>
+                                <p class="review_desc">{{ review.content}}</p>
+                            </div>
+
+                        {% if is_granted('ROLE_ADMIN') %}
+                            <a href="{{ path('review_delete', {'id': review.id}) }}" class="delete_button">Delete</a>
                         {% endif %}
                     </div>
                 {% endfor %}

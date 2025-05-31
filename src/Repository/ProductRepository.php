@@ -26,7 +26,7 @@ class ProductRepository extends ServiceEntityRepository
     ';
 
         $stmt = $conn->prepare($sql);
-        $stmt->bindValue('limit', $limit, \PDO::PARAM_INT); // 🔥 ВАЖНО: Указать тип!
+        $stmt->bindValue('limit', $limit, \PDO::PARAM_INT);
         $resultSet = $stmt->executeQuery();
 
         $ids = array_column($resultSet->fetchAllAssociative(), 'id');

@@ -6,7 +6,9 @@ use App\Entity\Product;
 use App\Form\Type\BrandType;
 use App\Form\Type\ProductType;
 use App\Repository\BrandRepository;
+use App\Repository\ProductRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use JetBrains\PhpStorm\NoReturn;
 use Symfony\Component\HttpFoundation\File\Exception\FileException;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Attribute\Route;
@@ -68,7 +70,19 @@ public function new(Request $request, EntityManagerInterface $em, SluggerInterfa
         return $this->redirectToRoute('main');
     }
 
-    #[\Symfony\Component\Routing\Annotation\Route('/brand/{id}', name: 'brand_show')]
+    #[NoReturn] #[Route('/brand/all', name: 'brand_show_all')]
+    public function showAll(BrandRepository $brandRepository): Response
+    {
+        $allBrands = $brandRepository->findAll();
+        $mainPage = $this->generateUrl('main');
+
+        return $this->render('brand/showAll.html.twig', [
+            'brands' => $allBrands,
+            'mainPage' => $mainPage,
+        ]);
+    }
+
+    #[Route('/brand/{id}', name: 'brand_show')]
     public function show(int $id, BrandRepository $brandRepository): Response
     {
         $brand = $brandRepository->find($id);
@@ -84,4 +98,5 @@ public function new(Request $request, EntityManagerInterface $em, SluggerInterfa
             'products' => $products,
         ]);
     }
+
 }

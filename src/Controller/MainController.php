@@ -5,6 +5,7 @@ use App\Entity\Category;
 use App\Repository\BrandRepository;
 use App\Repository\CategoryRepository;
 use App\Repository\ProductRepository;
+use App\Repository\ReviewRepository;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -13,13 +14,14 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 class MainController extends AbstractController
 {
     #[Route('/', name: 'main')]
-    public function number(CategoryRepository $categoryRepository, BrandRepository $brandRepository, ProductRepository $productRepository): Response
+    public function number(CategoryRepository $categoryRepository, BrandRepository $brandRepository, ProductRepository $productRepository, ReviewRepository $reviewRepository): Response
     {
         $user = $this->getUser();
         $categories = $categoryRepository->findAll();
         $brands = $brandRepository->findAll();
         $mainPage = $this->generateUrl('main');
         $randomProducts = $productRepository->findRandomProducts(4);
+        $randomReviews = $reviewRepository->findRandomReviews(3);
         $accountPage = $this->generateUrl('account_page');
         $pages = [
             'category' => $this->generateUrl('category'),
@@ -41,6 +43,7 @@ class MainController extends AbstractController
             'pages' => $pages,
             'user' => $user,
             'categories' => $categories,
+            'reviews' => $randomReviews,
         ]);
     }
 }

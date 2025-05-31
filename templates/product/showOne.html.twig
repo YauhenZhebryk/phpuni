@@ -1,0 +1,30 @@
+{% extends 'secondpage.html.twig' %}
+{%  block headertitle %}{{ product.name }}{% endblock %}
+
+{% block title %}{{ product.name }}{% endblock %}
+
+
+
+{% block body %}
+    <div class="container mt-5 product-page_container">
+        <img src="{{ asset('uploads/images/' ~ product.image) }}" alt="" class="product-page_img">
+    <div class="product-page_text">
+        <p class="product-page_description">{{ product.description }}</p>
+        <a class="product-page_category" href="{{ path('category_show', {'id': category.id}) }}">{{ category.name }} &rarr;</a>
+        <a href="{{ path('brand_show', {'id': brand.id}) }}"><img class="product-page_brand-img" src="{{ asset('uploads/images/' ~ brand.image) }}" alt=""></a>
+        <p class="product-page_availability">
+            Availability:
+            {% if product.availability == 1 %}
+            &#10003;
+            {% elseif product.availability == 0%}
+            &#10006;
+            {% endif %}
+
+        </p>
+
+
+    </div>
+    </div>
+
+
+{% endblock %}

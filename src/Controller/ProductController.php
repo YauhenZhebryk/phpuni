@@ -3,6 +3,7 @@ namespace App\Controller;
 
 use App\Entity\Product;
 use App\Form\Type\ProductType;
+use App\Repository\BrandRepository;
 use App\Repository\ProductRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use JetBrains\PhpStorm\NoReturn;
@@ -75,6 +76,24 @@ public function new(Request $request, EntityManagerInterface $em, SluggerInterfa
         return $this->render('show.html.twig', [
             'products' => $allProducts,
             'mainPage' => $mainPage,
+        ]);
+    }
+
+    #[\Symfony\Component\Routing\Annotation\Route('/product/{id}', name: 'product_show_one')]
+    public function oneProductShow(int $id, ProductRepository $productRepository): Response
+    {
+        $product = $productRepository->find($id);
+        $brand = $product->getBrand();
+        $category = $product->getCategory()[0];
+
+        if (!$product) {
+            throw $this->createNotFoundException('Product not found');
+        }
+
+        return $this->render('product/showOne.html.twig', [
+            'product' => $product,
+            'brand' => $brand,
+            'category' => $category,
         ]);
     }
 }

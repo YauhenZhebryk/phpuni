@@ -16,6 +16,36 @@ class ReviewRepository extends ServiceEntityRepository
         parent::__construct($registry, Review::class);
     }
 
+    public function findRandomReviews(int $limit = 3): array
+    {
+        $conn = $this->getEntityManager()->getConnection();
+
+        $sql = '
+        SELECT id FROM review
+        ORDER BY RAND()
+        LIMIT :limit
+    ';
+
+        $stmt = $conn->prepare($sql);
+        $stmt->bindValue('limit', $limit, \PDO::PARAM_INT);
+        $resultSet = $stmt->executeQuery();
+
+        $ids = array_column($resultSet->fetchAllAssociative(), 'id');
+
+        if (empty($ids)) {
+            return [];
+        }
+
+        return $this->createQueryBuilder('p')
+            ->select('p, u') // Выбираем отзыв и связанного пользователя
+            ->leftJoin('p.user', 'u') // Присоединяем таблицу User
+            ->where('p.id IN (:ids)')
+            ->setParameter('ids', $ids)
+            ->getQuery()
+            ->getResult();
+    }
+
+
     //    /**
     //     * @return Review[] Returns an array of Review objects
     //     */
