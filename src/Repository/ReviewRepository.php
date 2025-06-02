@@ -37,8 +37,8 @@ class ReviewRepository extends ServiceEntityRepository
         }
 
         return $this->createQueryBuilder('p')
-            ->select('p, u') // Выбираем отзыв и связанного пользователя
-            ->leftJoin('p.user', 'u') // Присоединяем таблицу User
+            ->select('p, u')
+            ->leftJoin('p.user', 'u')
             ->where('p.id IN (:ids)')
             ->setParameter('ids', $ids)
             ->getQuery()

@@ -28,7 +28,6 @@ class ProductViewListener
 
         $product = $request->attributes->get('product');
 
-        // Если в Route передаётся только id, достаём вручную:
         if (!$product && $request->attributes->get('id')) {
             $product = $this->em->getRepository(Product::class)->find($request->attributes->get('id'));
         }

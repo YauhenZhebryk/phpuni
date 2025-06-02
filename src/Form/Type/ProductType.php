@@ -26,7 +26,7 @@ class ProductType extends AbstractType
             ->add('name', TextType::class)
             ->add('price', MoneyType::class)
             ->add('description', TextareaType::class)
-            ->add('availability', CheckboxType::class, ['required' => true])
+            ->add('availability', CheckboxType::class, ['required' => false])
 
             ->add('brand', EntityType::class, [
                 'class' => Brand::class,
