@@ -1,0 +1,8 @@
+{% extends 'base.html.twig' %}
+
+{% block header %}
+    <header class="account-page_header">
+        <a href="{{ path('main') }}"><img src="{{ asset('images/back.svg') }}" alt="" class="account-page_back"></a>
+        <h1>{% block headertitle %}{% endblock %}</h1>
+    </header>
+{% endblock %}

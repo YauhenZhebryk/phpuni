@@ -1,0 +1,117 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <header class="header">
+        <main>
+            <div class="language-switcher">
+                <a href="{{ path('app_change_locale', {'locale': 'en'}) }}" class="switcher-item">English</a>
+                <a href="{{ path('app_change_locale', {'locale': 'pl'}) }}" class="switcher-item">Polski</a>
+            </div>
+            <div class="header_logo-wrapper"><a href="{{ mainPage }}" class="header_logo">MUSEBOX</a></div>
+            <div>
+                <a href="{{ accountPage }}"  class="header_account">
+                    {% if user %}
+                        <span class="header_account-name">{{ user.username }}</span>
+                    {% endif %}
+                    <img src="{{ asset('images/account.svg') }}" alt="account logo" class="header_account-img"></a>
+                <a href=""></a>
+            </div>
+        </main>
+
+        <nav class="header_nav">
+            <a href="{{ path('category_show_all') }}">{{ categoriestrans|trans }}</a>
+            <a href="{{ path('brand_show_all') }}">{{ brandstrans|trans }}</a>
+            <a href="{{ path('product_show') }}">{{ allproducts|trans }}</a>
+        </nav>
+    </header>
+    <main>
+        <h1 class="main_header-text">{{ translatedHelloMessage }}</h1>
+        <section class="categories_section section">
+            <h2 class="categories_section-text section-text">{{ categoriestrans|trans }}</h2>
+            <div class="categories_section-container section-container">
+                {% for category in categories %}
+                    <div class="item-wrapper">
+                        <a class="category-item card_body" href="{{ path('category_show', {'id': category.id}) }}">
+                            <div class="category-item-image-wrapper card-img-wrapper">
+                                <img src="{{ asset('uploads/images/' ~ category.image) }}" class="category-item-image card-image" alt="{{ category.name }}">
+                            </div>
+                            <div class="category-item-body">
+                                <h3 class="category-item-title">{{ category.name }}</h3>
+                                <p class="category-item-desc card-desc">{{ category.description }}</p>
+                            </div>
+                        </a>
+
+                        {% if is_granted('ROLE_ADMIN') %}
+                            <a href="{{ path('category_delete', {'id': category.id}) }}" class="delete_button">Delete</a>
+                        {% endif %}
+                    </div>
+                {% endfor %}
+            </div>
+        </section>
+
+        <section class="brand_section section">
+            <h2 class="brands_section-text section-text">{{ brandstrans|trans }}</h2>
+            <div class="categories_section-container section-container">
+                {% for brand in brands %}
+                    <div class="item-wrapper">
+                        <a class="category-item card_body"  href="{{ path('brand_show', {'id': brand.id}) }}">
+                            <div class="category-item-image-wrapper card-img-wrapper">
+                                <img src="{{ asset('uploads/images/' ~ brand.image) }}" class="category-item-image card-image" alt="{{ brand.name }}">
+                            </div>
+                            <div class="category-item-body">
+                                <h3 class="category-item-title">{{ brand.name }}</h3>
+                                <p class="category-item-desc card-desc">{{ brand.rating }}&#11088;</p>
+                            </div>
+                        </a>
+
+                        {% if is_granted('ROLE_ADMIN') %}
+                            <a href="{{ path('brand_delete', {'id': brand.id}) }}" class="delete_button">Delete</a>
+                        {% endif %}
+                    </div>
+                {% endfor %}
+            </div>
+        </section>
+        <section class="interest_section section">
+            <h2 class="interest-text section-text">{{ intereststrans|trans }}</h2>
+            <div class="interest_section-container section-container">
+                {% for product in randomProducts %}
+                    <div class="item-wrapper">
+                    <a class="interest-item" href="{{ path('product_show_one', {'id': product.id}) }}">
+                        <div class="interest-item-image-wrapper card-img-wrapper">
+                            <img src="{{ asset('uploads/images/' ~ product.image) }}" class="interest-item-image" alt="{{ product.name }}">
+                        </div>
+                        <div class="interest-item-body">
+                            <h3 class="interest-item-title">{{ product.name }}</h3>
+                            <p>Views: {{ product.views }}</p>
+                        </div>
+                    </a>
+
+                        {% if is_granted('ROLE_ADMIN') %}
+                            <a href="{{ path('product_delete', {'id': product.id}) }}" class="delete_button">Delete</a>
+                        {% endif %}
+                    </div>
+                {% endfor %}
+            </div>
+        </section>
+        <section class="reviews_section">
+            <h2 class="review_text section-text">{{ reviewstrans|trans }}</h2>
+            <div class="review_section_container section-container">
+                {% for review in reviews %}
+                    <div class="item-wrapper">
+                            <div class="review_item-body">
+                                <div class="review_user-wrapper">
+                                    <h3 class="review_user">{{ review.user.username}}</h3>
+                                    <p class="review_rating">{{ review.rating}}&#11088;</p>
+                                </div>
+                                <p class="review_desc">{{ review.content}}</p>
+                            </div>
+
+                        {% if is_granted('ROLE_ADMIN') %}
+                            <a href="{{ path('review_delete', {'id': review.id}) }}" class="delete_button">Delete</a>
+                        {% endif %}
+                    </div>
+                {% endfor %}
+            </div>
+        </section>
+    </main>
+{% endblock %}

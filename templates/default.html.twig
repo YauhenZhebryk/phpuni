@@ -1,0 +1,29 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Main Page{% endblock %}
+
+{% block body %}
+
+
+
+    <div class="container" style="text-align: center">
+        <div style="padding: 20px;">
+            {% if user is defined and user is not null %}
+                <h2 class="">Welcome to MuseMaster, {{ user.username }}</h2>
+            {% else %}
+                <h2>Welcome to MuseMaster</h2>
+            {% endif %}
+        </div>
+
+    {% for page in pages %}
+        {% if '/admin' not in page or is_granted('ROLE_ADMIN') %}
+        <hr>
+        <a href={{ page }}>{{ page|replace({'/': '', '\\': ''})|upper }}</a>
+        {% endif %}
+    {% endfor %}
+        <hr>
+    </div>
+
+{% endblock %}
+
+{% block Homepage %}{% endblock %}

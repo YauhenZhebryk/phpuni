@@ -1,0 +1,27 @@
+{% extends 'secondpage.html.twig' %}
+{%  block headertitle %} {{ brand.name }} {{ brand.rating }}&#11088;{% endblock %}
+{% block title %}Category {{ brand.name }}{% endblock %}
+
+{% block body %}
+    <div class="container mt-4">
+        <div class="row">
+            {% for product in products %}
+                <div class="col-md-4 mb-3">
+                    <div class="card h-100">
+                        <a href="{{ path('product_show_one', {'id': product.id}) }}">
+                        <img src="{{ asset('uploads/images/' ~ product.image) }}" class="card-img-top" alt="{{ product.name }}">
+                        <div class="card-body">
+                            <h5 class="card-title">{{ product.name }}</h5>
+                            <p class="card-text">{{ product.description|slice(0, 100) ~ '...' }}</p>
+                            <p><strong>Price:</strong> {{ product.price }} $</p>
+                            <p><strong>Availability:</strong> {{ product.availability ? '&#10003;' : 'We have no products, sorry :(' }}</p>
+                        </div>
+                            </a>
+                    </div>
+                </div>
+            {% else %}
+                <p>This brand has no products</p>
+            {% endfor %}
+        </div>
+    </div>
+{% endblock %}

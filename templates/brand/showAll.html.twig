@@ -1,0 +1,35 @@
+{% extends 'secondpage.html.twig' %}
+{%  block headertitle %}Brands List{% endblock %}
+{% block title %}Brands List{% endblock %}
+
+{% block body %}
+    <div class="container" style="text-align: center">
+    <h1>Brands List</h1>
+
+    {% if brands is not empty %}
+    <div class="row">
+        {% for brand in brands %}
+            <div class="card" style="margin: 5px 0">
+                <a href="{{ path('brand_show', {'id': brand.id}) }}">
+                    <div class="card-body">
+                        <h5 class="card-title">{{ brand.name }}</h5>
+                        {% if brand.image %}
+                            <img src="{{ asset('uploads/images/' ~ brand.image) }}" alt="{{ brand.name }}" style="max-width: 200px;">
+                        {% endif %}
+                        <p class="card-text" style="margin-bottom: 5px;"><strong>Rating:</strong> {{ brand.rating }}&#11088;</p>
+
+
+                        {% if is_granted('ROLE_ADMIN') %}
+                            <a href="{{ path('brand_delete', {'id': brand.id}) }}" class="delete_button" >Delete</a>
+                        {% endif %}
+                    </div>
+                </a>
+            </div>
+
+        {% endfor %}
+        {% else %}
+            <p>No brands found.</p>
+        {% endif %}
+
+    </div>
+{% endblock %}
