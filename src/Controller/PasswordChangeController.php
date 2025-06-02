@@ -27,7 +27,7 @@ class PasswordChangeController extends AbstractController
             $user->setPassword($passwordHasher->hashPassword($user, $newPassword));
             $entityManager->flush();
             $this->addFlash('success', 'Password changed.');
-            return $this->redirectToRoute('message');
+            return $this->redirectToRoute('account_page');
         }
 
         return $this->render('passwordChange.html.twig',[

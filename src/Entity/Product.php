@@ -46,6 +46,7 @@ class Product
     public function __construct()
     {
         $this->category = new ArrayCollection();
+        $this->views = 0;
     }
 
     public function getId(): ?int
