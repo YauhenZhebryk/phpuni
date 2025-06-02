@@ -325,3 +325,19 @@ a:visited{
     align-items: center;
     min-height: 100px;
 }
+
+.language-switcher{
+    margin: 20px;
+    display: flex;
+    gap: 20px;
+    position: absolute;
+    left: 0;
+    top: 5px;
+}
+
+.switcher-item{
+    padding: 5px;
+    background-color: #fff;
+    color: #000;
+    border-radius: 10px;
+}

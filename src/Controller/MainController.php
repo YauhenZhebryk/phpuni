@@ -9,12 +9,14 @@ use App\Repository\ReviewRepository;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Contracts\Translation\TranslatorInterface;
+use Symfony\Component\HttpFoundation\Request;
 
 
 class MainController extends AbstractController
 {
     #[Route('/', name: 'main')]
-    public function number(CategoryRepository $categoryRepository, BrandRepository $brandRepository, ProductRepository $productRepository, ReviewRepository $reviewRepository): Response
+    public function number(CategoryRepository $categoryRepository, BrandRepository $brandRepository, ProductRepository $productRepository, ReviewRepository $reviewRepository,TranslatorInterface $translator,Request $request): Response
     {
         $user = $this->getUser();
         $categories = $categoryRepository->findAll();
@@ -23,6 +25,13 @@ class MainController extends AbstractController
         $randomProducts = $productRepository->findRandomProducts(4);
         $randomReviews = $reviewRepository->findRandomReviews(3);
         $accountPage = $this->generateUrl('account_page');
+        $musebox = 'MUSEBOX';
+        $translatedHelloMessage = $translator->trans('welcome_message', ['%musebox%' => $musebox]);
+        $categoriestrans = $translator->trans('categories');
+        $brandstrans = $translator->trans('brands');
+        $intereststrans = $translator->trans('interested');
+        $reviewstrans = $translator->trans('reviewscheck');
+        $allproductstrans = $translator->trans('allproducts');
         $pages = [
             'category' => $this->generateUrl('category'),
             'product' => $this->generateUrl('product'),
@@ -36,6 +45,12 @@ class MainController extends AbstractController
 
 
         return $this->render('mainpage.html.twig', [
+            'allproducts' => $allproductstrans,
+            'reviewstrans' => $reviewstrans,
+            'categoriestrans' => $categoriestrans,
+            'brandstrans' => $brandstrans,
+            'intereststrans' => $intereststrans,
+            'translatedHelloMessage' => $translatedHelloMessage,
             'randomProducts' => $randomProducts,
             'brands' => $brands,
             'mainPage' => $mainPage,

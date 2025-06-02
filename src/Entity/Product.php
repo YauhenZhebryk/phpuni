@@ -40,6 +40,9 @@ class Product
     #[ORM\Column(length: 255)]
     private ?string $image = null;
 
+    #[ORM\Column]
+    private ?int $views = null;
+
     public function __construct()
     {
         $this->category = new ArrayCollection();
@@ -144,5 +147,21 @@ class Product
         $this->image = $image;
 
         return $this;
+    }
+
+    public function getViews(): ?int
+    {
+        return $this->views;
+    }
+
+    public function setViews(int $views): static
+    {
+        $this->views = $views;
+
+        return $this;
+    }
+    public function incrementViews(): void
+    {
+        $this->views++;
     }
 }

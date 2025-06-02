@@ -1,13 +1,18 @@
 # see https://symfony.com/doc/current/reference/configuration/framework.html
 framework:
+    default_locale: en
+    enabled_locales: ['en', 'pl']
+    translator:
+        default_path: '%kernel.project_dir%/translations'
+        enabled: true
+        fallbacks: ['en']
+        paths:
+            - '%kernel.project_dir%/translations'
+    session:
+        enabled: true
+        handler_id: ~
+
     secret: '%env(APP_SECRET)%'
-
-    # Note that the session will be started ONLY if you read or write from it.
-    session: true
-
-    #esi: true
-    #fragments: true
-
 when@test:
     framework:
         test: true
